@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xmlns:http="http://www.mulesoft.org/schema/mule/http"
+	xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
+	<flow name="scatter-gatherFlow" doc:id="a02eab1e-0814-4992-b97a-1c42c07dfdb1" >
+		<http:listener doc:name="Listener" doc:id="a9827599-5dac-44fc-8cdf-0f0b7a320c66" config-ref="HTTP_Listener_config" path="/scatter-gather"/>
+		<logger level="INFO" doc:name="Before SC" doc:id="03707a8f-4a43-4d17-909a-7ee2835867f6" message="#[payload]"/>
+		<scatter-gather doc:name="Scatter-Gather" doc:id="7f825985-471d-4bd1-a5e3-63748955813d" >
+			<route >
+				<set-payload value='#[{&#10;  "FirstName": "João",&#10;  "LastName": "Silva",&#10;  "Email": "joao.silva@email.com"&#10;}]' doc:name="Payload01" doc:id="11787094-fa7f-42e5-aa06-0895fe8f7bea" />
+				<logger level="INFO" doc:name="Payload01" doc:id="051ba534-f9de-44e5-897a-c85f95b05bf5" message="#[payload]"/>
+			</route>
+			<route >
+				<set-payload value='#[{&#10;  "Street": "Rua das Flores",&#10;  "City": "São Paulo",&#10;  "PostalCode": "12345-678"&#10;}]' doc:name="Payload02" doc:id="3b6016fd-9f7e-458b-afda-7f0c53c8a8bd" />
+				<logger level="INFO" doc:name="Payload02" doc:id="fbfd3a4d-feb8-4d48-836d-fd8ce9e888a6" message="#[payload]"/>
+			</route>
+			<route >
+				<set-payload value='#[{&#10;  "ProductName": "Notebook Dell",&#10;  "Price": 4500.00,&#10;  "StockQuantity": 10&#10;}]' doc:name="Payload03" doc:id="33086d95-ffa5-4885-b0ec-c59685ba51c3" />
+				<logger level="INFO" doc:name="Payload03" doc:id="e7f2352d-f747-4abc-a959-2c159a66aa5e" message="#[payload]"/>
+			</route>
+		</scatter-gather>
+		<ee:transform doc:name="Transform Message" doc:id="29b4a135-4242-4929-8f35-630d86b1354b" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+payload..payload]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+		<logger level="INFO" doc:name="End SC" doc:id="5ac012ec-5966-4220-90d9-2c9f318c6ef7" message="Final #[payload]"/>
+	</flow>
+</mule>
