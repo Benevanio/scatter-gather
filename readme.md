@@ -58,7 +58,7 @@ O projeto é composto pelos seguintes elementos principais:
 2. **Passos para rodar o projeto**:
    1. Clone este repositório:
       ```bash
-      git clone https://github.com/seu-usuario/projeto-scatter-gather.git
+      git clone https://github.com/Benevanio/scatter-gather
       ```
    2. Importe o projeto para o **MuleSoft Anypoint Studio**.
    3. Verifique as configurações de integração e fontes de dados.
